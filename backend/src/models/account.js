@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import getConnection from "../helpers/databaseConnection.js";
+import getConnection from "../helper/dbconnection.js";
 
 const accountModel = {
   account_id: {
@@ -19,6 +19,10 @@ const accountModel = {
     type: DataTypes.INTEGER,
     defaultValue: 1,
   },
+  role: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 };
 
 let account = null;
@@ -26,13 +30,13 @@ const initAccountData = async () => {
   try {
     if (account) return account;
     const sequelize = await getConnection();
-    product = sequelize.define("acounts", accountModel, {
+    account = sequelize.define("acounts", accountModel, {
       freezeTableName: true,
     });
     await account.sync({ alter: true });
     return account;
   } catch (err) {
-    console.log("modelerror",err.message);
+    console.log("modelerror", err.message);
   }
 };
 
